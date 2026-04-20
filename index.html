@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bruno Enzo — Ator & Modelo</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy:    #0D1B3E;
+    --navy-mid:#122150;
+    --navy-light: #1A2D6B;
+    --red:     #B01F1F;
+    --red-light:#C72828;
+    --amber:   #D4820A;
+    --amber-light: #E8991A;
+    --white:   #FFFFFF;
+    --off:     #E8EAF0;
+    --text:    #B8C4D8;
+    --dark:    #091429;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CURSOR */
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--amber); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid rgba(212,130,10,.5); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 60px;
+    background: linear-gradient(to bottom, rgba(9,20,41,.95) 0%, transparent 100%);
+  }
+  .nav-logo { display: flex; align-items: baseline; text-decoration: none; }
+  .nav-logo-bruno {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 22px; letter-spacing: 2px; color: var(--white);
+  }
+  .nav-logo-enzo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 22px; letter-spacing: 2px; color: var(--red);
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--text); text-decoration: none;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase; transition: color .3s;
+  }
+  .nav-links a:hover { color: var(--amber); }
+
+  /* HERO */
+  .hero { position: relative; height: 100vh; display: flex; align-items: flex-end; overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 2;
+    background:
+      linear-gradient(to right, rgba(9,20,41,.93) 38%, rgba(9,20,41,.15) 100%),
+      linear-gradient(to top, rgba(9,20,41,1) 0%, transparent 45%);
+  }
+  .hero-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+  }
+  .hero-stripe {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 5px; z-index: 4;
+    background: linear-gradient(to right, var(--red) 0%, var(--amber) 50%, var(--navy-light) 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 3;
+    padding: 0 60px 90px; max-width: 680px;
+  }
+  .hero-tag {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--amber); margin-bottom: 16px;
+    opacity: 0; animation: fadeUp 1s ease forwards .3s;
+  }
+  .hero-name { line-height: .9; opacity: 0; animation: fadeUp 1s ease forwards .5s; }
+  .hero-name-bruno {
+    display: block; font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(76px, 11.5vw, 150px); color: var(--white);
+  }
+  .hero-name-enzo {
+    display: block; font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(76px, 11.5vw, 150px); color: var(--red); margin-left: 6px;
+  }
+  .hero-role {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 400;
+    font-size: 20px; letter-spacing: 6px; text-transform: uppercase; color: var(--amber); margin-top: 14px;
+    opacity: 0; animation: fadeUp 1s ease forwards .7s;
+  }
+  .hero-divider {
+    width: 60px; height: 2px; margin: 20px 0;
+    background: linear-gradient(to right, var(--red), var(--amber));
+    opacity: 0; animation: fadeUp 1s ease forwards .85s;
+  }
+  .hero-awards {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 1s ease forwards 1s;
+  }
+  .award-pill {
+    background: rgba(176,31,31,.18); border: 1px solid rgba(176,31,31,.4);
+    padding: 7px 14px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--off);
+  }
+  .hero-scroll {
+    position: absolute; bottom: 32px; right: 60px; z-index: 3;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeIn 1s ease forwards 1.6s;
+  }
+  .hero-scroll span { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--amber); writing-mode: vertical-rl; }
+  .scroll-line { width: 1px; height: 56px; background: linear-gradient(to bottom, var(--amber), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+
+  /* SHARED */
+  section { padding: 120px 60px; }
+  .section-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--amber); margin-bottom: 16px; }
+  .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(48px,6vw,80px); line-height: .95; letter-spacing: 1px; color: var(--white); }
+  .section-title .red { color: var(--red); }
+  .title-bar { width: 48px; height: 3px; margin: 18px 0; background: linear-gradient(to right, var(--red), var(--amber)); }
+
+  /* SOBRE */
+  .sobre-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .sobre-text { font-size: 17px; line-height: 1.85; color: var(--text); margin-top: 8px; }
+  .sobre-text strong { color: var(--off); font-weight: 500; }
+  .sobre-text em { color: var(--amber); font-style: normal; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 40px; }
+  .stat { background: var(--navy-mid); padding: 24px; border-left: 3px solid transparent; transition: border-color .3s; }
+  .stat:hover { border-left-color: var(--red); }
+  .stat-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 44px; color: var(--red); line-height: 1; }
+  .stat-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text); margin-top: 5px; opacity: .7; }
+  .sobre-visual { position: relative; }
+  .sobre-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top; }
+  .sobre-frame { position: absolute; top: 16px; right: -16px; bottom: -16px; left: 16px; border: 2px solid var(--red); z-index: -1; opacity: .35; }
+  .sobre-badge { position: absolute; bottom: -20px; left: -20px; background: var(--red); padding: 16px 20px; z-index: 2; }
+  .sobre-badge-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 32px; color: var(--white); line-height: 1; }
+  .sobre-badge-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.7); margin-top: 2px; }
+
+  /* PREMIAÇÕES */
+  .premiacoes-section { background: var(--dark); }
+  .premiacoes-inner { max-width: 1200px; margin: 0 auto; }
+  .premiacoes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 56px; }
+  .premio-card { background: var(--navy-mid); padding: 44px 32px; position: relative; overflow: hidden; transition: background .3s; }
+  .premio-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, var(--red), var(--amber)); transform: scaleX(0); transform-origin: left; transition: transform .4s ease; }
+  .premio-card:hover { background: #182d62; }
+  .premio-card:hover::after { transform: scaleX(1); }
+  .premio-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 60px; color: rgba(176,31,31,.12); line-height: 1; margin-bottom: 14px; }
+  .premio-festival { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 1px; color: var(--amber); margin-bottom: 5px; text-transform: uppercase; }
+  .premio-local { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text); opacity: .5; margin-bottom: 14px; }
+  .premio-titulo { font-size: 22px; font-weight: 600; color: var(--white); }
+  .premio-filme { font-size: 13px; color: var(--text); margin-top: 5px; opacity: .6; font-style: italic; }
+  .premio-special { grid-column: 1/-1; background: var(--red); display: grid; grid-template-columns: auto 1fr; align-items: center; }
+  .premio-special-left { padding: 32px 36px; border-right: 1px solid rgba(255,255,255,.15); }
+  .premio-special-crown { font-size: 44px; line-height: 1; }
+  .premio-special-right { padding: 32px 36px; }
+  .premio-special .premio-festival { color: var(--white); }
+  .premio-special .premio-local { color: rgba(255,255,255,.65); opacity: 1; }
+  .premio-special .premio-titulo { font-size: 26px; }
+  .premio-special .premio-filme { color: rgba(255,255,255,.7); opacity: 1; font-style: normal; }
+
+  /* FOTOS */
+  .fotos-section { padding: 120px 0; background: var(--navy); }
+  .fotos-header { padding: 0 60px; margin-bottom: 40px; }
+  .fotos-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 300px 300px; gap: 3px; }
+  .foto-item { overflow: hidden; position: relative; }
+  .foto-item:first-child { grid-row: 1/3; }
+  .foto-item img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .7s ease; }
+  .foto-item:hover img { transform: scale(1.06); }
+  .foto-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(9,20,41,.6) 0%, transparent 50%); opacity: 0; transition: opacity .4s; }
+  .foto-item:hover .foto-overlay { opacity: 1; }
+
+  /* HABILIDADES */
+  .habilidades-section { background: var(--dark); }
+  .habilidades-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .habilidade-list { list-style: none; margin-top: 36px; }
+  .habilidade-list li { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(26,45,107,.5); font-size: 14px; color: var(--text); transition: color .3s; }
+  .habilidade-list li:hover { color: var(--white); }
+  .habilidade-list li span { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); }
+  .fisico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 36px; }
+  .fisico-item { background: var(--navy-mid); padding: 20px; }
+  .fisico-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 28px; color: var(--white); line-height: 1; }
+  .fisico-key { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-top: 4px; opacity: .8; }
+
+  /* VIDEOS */
+  .videos-inner { max-width: 1200px; margin: 0 auto; }
+  .videos-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 3px; margin-top: 56px; }
+  .video-card { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--navy-mid); cursor: pointer; display: block; text-decoration: none; }
+  .video-card iframe { width: 100%; height: 100%; border: none; pointer-events: none; }
+  .video-card-overlay { position: absolute; inset: 0; background: rgba(9,20,41,.55); display: flex; align-items: center; justify-content: center; transition: background .3s; }
+  .video-card:hover .video-card-overlay { background: rgba(9,20,41,.2); }
+  .play-btn { width: 64px; height: 64px; border: 2px solid var(--amber); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform .3s, background .3s; }
+  .video-card:hover .play-btn { transform: scale(1.1); background: rgba(212,130,10,.2); }
+  .play-btn svg { fill: var(--amber); width: 22px; margin-left: 4px; }
+  .video-title { position: absolute; bottom: 16px; left: 16px; right: 16px; font-size: 14px; font-weight: 500; color: var(--white); }
+
+  /* CONTATO */
+  .contato-section { background: var(--navy-mid); }
+  .contato-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+  .contato-inner .section-label { justify-content: center; display: flex; }
+  .contato-inner .section-title { text-align: center; }
+  .contato-inner .title-bar { margin: 18px auto; }
+  .contato-text { font-size: 18px; line-height: 1.8; color: var(--text); margin-top: 8px; }
+  .contato-btns { display: flex; gap: 14px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
+  .btn-red { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: var(--red); color: var(--white); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; font-weight: 500; font-family: 'Barlow',sans-serif; transition: background .3s, transform .3s; }
+  .btn-red:hover { background: var(--red-light); transform: translateY(-2px); }
+  .btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; border: 1px solid var(--amber); color: var(--amber); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; font-family: 'Barlow',sans-serif; transition: background .3s, transform .3s; }
+  .btn-outline:hover { background: rgba(212,130,10,.1); transform: translateY(-2px); }
+  .contato-info { display: flex; gap: 48px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
+  .info-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 5px; }
+  .info-val { font-size: 14px; color: var(--off); }
+  .agencias { margin-top: 44px; padding-top: 44px; border-top: 1px solid rgba(26,45,107,.6); }
+  .agencias-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text); opacity: .5; margin-bottom: 12px; }
+  .agencias-names { font-family: 'Cormorant Garamond',serif; font-size: 20px; color: var(--off); font-style: italic; }
+
+  footer { text-align: center; padding: 32px 60px; border-top: 1px solid rgba(26,45,107,.5); font-size: 11px; letter-spacing: 1px; color: var(--text); opacity: .4; background: var(--dark); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes scrollPulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  .reveal { opacity:0; transform:translateY(40px); transition:opacity .8s ease,transform .8s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  @media(max-width:768px){
+    nav{padding:20px} .nav-links{display:none}
+    section{padding:80px 20px}
+    .hero-content{padding:0 20px 60px}
+    .sobre-inner,.habilidades-inner{grid-template-columns:1fr;gap:56px}
+    .premiacoes-grid{grid-template-columns:1fr}
+    .fotos-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+    .fotos-grid .foto-item:first-child{grid-row:auto;grid-column:1/3}
+    .videos-grid{grid-template-columns:1fr}
+    .hero-scroll{display:none}
+    .premio-special{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <span class="nav-logo-bruno">BRUNO</span>
+    <span class="nav-logo-enzo">ENZO</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#premiacoes">Premiações</a></li>
+    <li><a href="#fotos">Fotos</a></li>
+    <li><a href="#videos">Vídeos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-img"
+    src="https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/1930f488-c3da-44da-9690-0217ebd9ceb1.jpg"
+    alt="Bruno Enzo"
+    onerror="this.src='https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/10d0a728-132c-414a-9e9d-dbb979bb9c48.jpg'"
+  />
+  <div class="hero-bg"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Rio de Janeiro · Brasil · Circuito Internacional</div>
+    <h1 class="hero-name">
+      <span class="hero-name-bruno">BRUNO</span>
+      <span class="hero-name-enzo">ENZO</span>
+    </h1>
+    <p class="hero-role">Ator &amp; Modelo</p>
+    <div class="hero-divider"></div>
+    <div class="hero-awards">
+      <div class="award-pill">🏆 Monza Film Fest · Itália</div>
+      <div class="award-pill">🏆 New Jersey Film Awards · EUA</div>
+      <div class="award-pill">👑 Mister Brasil Pre Teen 2024/25</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre" style="background:var(--navy)">
+  <div class="sobre-inner">
+    <div class="reveal">
+      <div class="section-label">Quem é</div>
+      <h2 class="section-title">UMA <span class="red">MARCA</span><br>EM ASCENSÃO</h2>
+      <div class="title-bar"></div>
+      <p class="sobre-text">
+        Nasceu dançando, sendo fotografado — e assim ficou.<br><br>
+        Com apenas <strong>10 anos</strong>, Bruno Enzo já percorreu festivais de cinema em três continentes, carregando no currículo o peso de quem <strong>não está começando: está estruturando carreira</strong>.<br><br>
+        Protagonista da curta-metragem <em>Os Pedais de Pedro</em>, premiado internacionalmente como Melhor Ator e Melhor Ator Jovem. Título nacional como <strong>Mister Brasil Pre Teen 2024/25</strong>.<br><br>
+        Além de ator e modelo, Bruno Enzo é uma <em>marca</em> — e marcas que chegam cedo ficam.
+      </p>
+      <div class="stats-grid">
+        <div class="stat reveal"><div class="stat-num">3+</div><div class="stat-label">Premiações internacionais</div></div>
+        <div class="stat reveal"><div class="stat-num">10</div><div class="stat-label">Anos de idade</div></div>
+        <div class="stat reveal"><div class="stat-num">2</div><div class="stat-label">Agências representantes</div></div>
+        <div class="stat reveal"><div class="stat-num">6+</div><div class="stat-label">Habilidades artísticas</div></div>
+      </div>
+    </div>
+    <div class="sobre-visual reveal">
+      <img class="sobre-img"
+        src="https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/22ee4231-8081-4fc6-afdc-b1f681449812.jpg"
+        alt="Bruno Enzo"
+        onerror="this.src='https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/ce917c9a-9614-48a8-9ac0-729da24cf8c2.jpg'"
+      />
+      <div class="sobre-frame"></div>
+      <div class="sobre-badge">
+        <div class="sobre-badge-val">RJ</div>
+        <div class="sobre-badge-label">Rio de Janeiro</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREMIAÇÕES -->
+<section id="premiacoes" class="premiacoes-section">
+  <div class="premiacoes-inner">
+    <div class="reveal">
+      <div class="section-label">Reconhecimento Internacional</div>
+      <h2 class="section-title">PREMIAÇÕES &amp;<br><span class="red">CONQUISTAS</span></h2>
+    </div>
+    <div class="premiacoes-grid">
+      <div class="premio-card reveal">
+        <div class="premio-num">01</div>
+        <div class="premio-festival">Monza Film Fest</div>
+        <div class="premio-local">Itália · Europa</div>
+        <div class="premio-titulo">Melhor Ator</div>
+        <div class="premio-filme">Os Pedais de Pedro</div>
+      </div>
+      <div class="premio-card reveal">
+        <div class="premio-num">02</div>
+        <div class="premio-festival">New Jersey Film Awards</div>
+        <div class="premio-local">EUA · América do Norte</div>
+        <div class="premio-titulo">Melhor Ator Jovem</div>
+        <div class="premio-filme">Os Pedais de Pedro</div>
+      </div>
+      <div class="premio-card reveal">
+        <div class="premio-num">03</div>
+        <div class="premio-festival">Festival Int. Cinema Fronteira</div>
+        <div class="premio-local">Rio Grande do Sul · Brasil</div>
+        <div class="premio-titulo">Melhor Ator</div>
+        <div class="premio-filme">Os Pedais de Pedro</div>
+      </div>
+      <div class="premio-card premio-special reveal">
+        <div class="premio-special-left"><div class="premio-special-crown">👑</div></div>
+        <div class="premio-special-right">
+          <div class="premio-festival">Mister Brasil Pre Teen</div>
+          <div class="premio-local">Brasil · 2024 / 2025</div>
+          <div class="premio-titulo">Título Nacional</div>
+          <div class="premio-filme">Imagem pública consolidada e presença de mercado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOTOS -->
+<section id="fotos" class="fotos-section">
+  <div class="fotos-header reveal">
+    <div class="section-label">Acervo Visual</div>
+    <h2 class="section-title">BOOK <span class="red">FOTOGRÁFICO</span></h2>
+  </div>
+  <div class="fotos-grid">
+    <div class="foto-item">
+      <img src="https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/1930f488-c3da-44da-9690-0217ebd9ceb1.jpg" alt="Bruno Enzo"/>
+      <div class="foto-overlay"></div>
+    </div>
+    <div class="foto-item">
+      <img src="https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/10d0a728-132c-414a-9e9d-dbb979bb9c48.jpg" alt="Bruno Enzo"/>
+      <div class="foto-overlay"></div>
+    </div>
+    <div class="foto-item">
+      <img src="https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/22ee4231-8081-4fc6-afdc-b1f681449812.jpg" alt="Bruno Enzo"/>
+      <div class="foto-overlay"></div>
+    </div>
+    <div class="foto-item">
+      <img src="https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/ce917c9a-9614-48a8-9ac0-729da24cf8c2.jpg" alt="Bruno Enzo"/>
+      <div class="foto-overlay"></div>
+    </div>
+    <div class="foto-item">
+      <img src="https://arquivos-elencodigital.s3.sa-east-1.amazonaws.com/imagens/elenco/5fe0c93809afa_16085670955fe0c937e8377.jpeg" alt="Bruno Enzo"/>
+      <div class="foto-overlay"></div>
+    </div>
+  </div>
+</section>
+
+<!-- HABILIDADES -->
+<section class="habilidades-section">
+  <div class="habilidades-inner">
+    <div class="reveal">
+      <div class="section-label">Formação & Habilidades</div>
+      <h2 class="section-title">TALENTO<br><span class="red">MÚLTIPLO</span></h2>
+      <div class="title-bar"></div>
+      <ul class="habilidade-list">
+        <li>Atuação — Teatro & Cinema <span>EOA · Em formação</span></li>
+        <li>Preparação — Novelas & Filmes <span>Conexão Z</span></li>
+        <li>Música — Flauta & Clarinete <span>Ativo</span></li>
+        <li>Música — Violão <span>Ativo</span></li>
+        <li>Dança de Salão <span>Ativo</span></li>
+        <li>Futebol <span>Ativo</span></li>
+        <li>Inglês <span>Em andamento</span></li>
+        <li>Natação — Nado Livre <span>Amador</span></li>
+        <li>Modelagem & Passarela <span>Experiente</span></li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="section-label">Características Físicas</div>
+      <h2 class="section-title" style="font-size:42px">PERFIL<br><span class="red">FÍSICO</span></h2>
+      <div class="title-bar"></div>
+      <div class="fisico-grid">
+        <div class="fisico-item"><div class="fisico-val">1,47m</div><div class="fisico-key">Altura</div></div>
+        <div class="fisico-item"><div class="fisico-val">40 kg</div><div class="fisico-key">Peso</div></div>
+        <div class="fisico-item"><div class="fisico-val">Castanho</div><div class="fisico-key">Olhos</div></div>
+        <div class="fisico-item"><div class="fisico-val">Atlético</div><div class="fisico-key">Tipo Físico</div></div>
+        <div class="fisico-item"><div class="fisico-val">Crespo</div><div class="fisico-key">Cabelo</div></div>
+        <div class="fisico-item"><div class="fisico-val">Nº 36</div><div class="fisico-key">Calçado</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos" style="background:var(--navy)">
+  <div class="videos-inner">
+    <div class="reveal">
+      <div class="section-label">Performance em Cena</div>
+      <h2 class="section-title">VÍDEOS &amp;<br><span class="red">MONÓLOGOS</span></h2>
+    </div>
+    <div class="videos-grid">
+      <a href="https://youtu.be/dgh_uwQ7NW8" target="_blank" class="video-card reveal">
+        <iframe src="https://www.youtube.com/embed/dgh_uwQ7NW8?mute=1" allowfullscreen loading="lazy"></iframe>
+        <div class="video-card-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="video-title">Vídeo de Apresentação</div>
+      </a>
+      <a href="https://youtu.be/rAkfFCkQhJs" target="_blank" class="video-card reveal">
+        <iframe src="https://www.youtube.com/embed/rAkfFCkQhJs?mute=1" allowfullscreen loading="lazy"></iframe>
+        <div class="video-card-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="video-title">Tragédia na Minha Família — Monólogo</div>
+      </a>
+      <a href="https://youtu.be/Eg1LHkFwkPg" target="_blank" class="video-card reveal">
+        <iframe src="https://www.youtube.com/embed/Eg1LHkFwkPg?mute=1" allowfullscreen loading="lazy"></iframe>
+        <div class="video-card-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="video-title">Filho de Bandido — Monólogo</div>
+      </a>
+      <a href="https://youtube.com/watch?v=fikrJtmvpQ0" target="_blank" class="video-card reveal">
+        <iframe src="https://www.youtube.com/embed/fikrJtmvpQ0?mute=1" allowfullscreen loading="lazy"></iframe>
+        <div class="video-card-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="video-title">Monólogo</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato" class="contato-section">
+  <div class="contato-inner">
+    <div class="reveal">
+      <div class="section-label">Castings & Contratações</div>
+      <h2 class="section-title">ENTRE EM<br><span class="red">CONTATO</span></h2>
+      <div class="title-bar"></div>
+      <p class="contato-text">Para castings (seleções), projetos editoriais, campanhas publicitárias e oportunidades de atuação, entre em contato diretamente.</p>
+    </div>
+    <div class="contato-btns reveal">
+      <a href="https://wa.me/5531993997822" class="btn-red" target="_blank">📱 WhatsApp</a>
+      <a href="https://instagram.com/Bruno_enzo_oficial" class="btn-outline" target="_blank">@ Instagram</a>
+    </div>
+    <div class="contato-info reveal">
+      <div><div class="info-label">Telefone</div><div class="info-val">+55 31 99399-7822</div></div>
+      <div><div class="info-label">Localidade</div><div class="info-val">Rio de Janeiro, RJ</div></div>
+      <div><div class="info-label">Instagram</div><div class="info-val">@Bruno_enzo_oficial</div></div>
+    </div>
+    <div class="agencias reveal">
+      <div class="agencias-label">Agências Representantes</div>
+      <div class="agencias-names">Conexão Z &nbsp;·&nbsp; Projeto Passarela — Agência MGT</div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Bruno Enzo · Ator & Modelo · Rio de Janeiro, Brasil</footer>
+
+<script>
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  (function anim(){
+    cursor.style.left=mx+'px';cursor.style.top=my+'px';
+    rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(anim);
+  })();
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
